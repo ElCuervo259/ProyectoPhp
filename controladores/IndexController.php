@@ -72,7 +72,7 @@ class IndexController extends BaseController
 
                $_SESSION['nombre'] = $_POST['usuario'];
 
-               $this->view->show("",$resultado);
+               $this->view->show("User",$resultado);
 
                
                //si el rol es 3 esta inactivo

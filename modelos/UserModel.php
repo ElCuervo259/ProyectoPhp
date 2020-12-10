@@ -244,6 +244,7 @@ class UserModel extends BaseModel
                           :password,:email,:telefono,:direccion,:imagen, :rol_id)";
           // Preparamos la consulta...
           $query = $this->db->prepare($sql);
+         
 
           // y la ejecutamos indicando los valores que tendría cada parámetro
           $query->execute([
@@ -283,12 +284,17 @@ class UserModel extends BaseModel
           //Inicializamos la transacción
           $this->db->beginTransaction();
           //Definimos la instrucción SQL parametrizada 
-          $sql = "UPDATE usuarios SET nombre= :nombre, email= :email, imagen= :imagen WHERE id=:id";
+          $sql = "UPDATE usuarios SET nombre=:nombre, apellido1=:apellido1, apellido2 =:apellido2,
+                                    telefono =:telefono, direccion=:direccion,rol_id=:rol_id, imagen= :imagen WHERE id=:id";
           $query = $this->db->prepare($sql);
           $query->execute([
              'id' => $datos["id"],
              'nombre' => $datos["nombre"],
-             'email' => $datos["email"],
+             'apellido1' => $datos["apellido1"],
+             'apellido2' => $datos["apellido2"],
+             'telefono' => $datos["telefono"],
+             'direccion' => $datos["direccion"],
+             'rol_id' => $datos["rol_id"],
              'imagen' => $datos["imagen"]
           ]);
           //Supervisamos si la inserción se realizó correctamente... 

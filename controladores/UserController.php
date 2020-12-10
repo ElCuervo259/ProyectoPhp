@@ -253,14 +253,22 @@ class UserController extends BaseController
       $errores = array();
       // Inicializamos valores de los campos de texto
       $valnombre = "";
-      $valemail = "";
+      $valapellido1 = "";
+      $valapellido2 = "";
+      $valtelefono = "";
+      $valdireccion = "";
+      $valrol_id = "";
       $valimagen = "";
 
       // Si se ha pulsado el botón actualizar...
       if (isset($_POST['submit'])) { //Realizamos la actualización con los datos existentes en los campos
          $id = $_POST['id']; //Lo recibimos por el campo oculto
          $nuevonombre = $_POST['txtnombre'];
-         $nuevoemail  = $_POST['txtemail'];
+         $nuevoapellido1  = $_POST['txtapellido2'];
+         $nuevoapellido2 = $_POST['txtapellido2'];
+         $nuevotelefono = $_POST['txttelefono'];
+         $nuevodireccion = $_POST['txtdireccion'];
+         $nuevorol_id = $_POST['txtrol_id'];
          $nuevaimagen = "";
 
          // Definimos la variable $imagen que almacenará el nombre de imagen 
@@ -304,7 +312,12 @@ class UserController extends BaseController
             $resultModelo = $this->modelo->actuser([
                'id' => $id,
                'nombre' => $nuevonombre,
-               'email' => $nuevoemail,
+               'apellido1' => $nuevoapellido1,
+               'apellido2' => $nuevoapellido2,
+               'telefono' => $nuevotelefono,
+               'direccion' => $nuevodireccion,
+               'rol_id' => $nuevorol_id,
+               
                'imagen' => $nuevaimagen
             ]);
             //Analizamos cómo finalizó la operación de registro y generamos un mensaje
@@ -329,8 +342,14 @@ class UserController extends BaseController
 
          // Obtenemos los valores para mostrarlos en los campos del formulario
          $valnombre = $nuevonombre;
-         $valemail  = $nuevoemail;
+         $valapellido1 = $nuevoapellido1;
+         $valapellido2 = $nuevoapellido2;
+         $valtelefono = $nuevotelefono;
+         $valdireccion = $nuevodireccion;
+         $valrol_id = $nuevorol_id;
          $valimagen = $nuevaimagen;
+
+
       } else { //Estamos rellenando los campos con los valores recibidos del listado
          if (isset($_GET['id']) && (is_numeric($_GET['id']))) {
             $id = $_GET['id'];
@@ -344,7 +363,11 @@ class UserController extends BaseController
                   "mensaje" => "Los datos del usuario se obtuvieron correctamente!! :)"
                ];
                $valnombre = $resultModelo["datos"]["nombre"];
-               $valemail  = $resultModelo["datos"]["email"];
+               $valapellido1 = $resultModelo["datos"]["apellido1"];
+               $valapellido2 = $resultModelo["datos"]["apellido2"];
+               $valtelefono = $resultModelo["datos"]["telefono"];
+               $valdireccion = $resultModelo["datos"]["direccion"];
+               $valrol_id = $resultModelo["datos"]["rol_id"];
                $valimagen = $resultModelo["datos"]["imagen"];
             else :
                $this->mensajes[] = [
@@ -360,8 +383,12 @@ class UserController extends BaseController
          "tituloventana" => "Base de Datos con PHP y PDO",
          "datos" => [
             "txtnombre" => $valnombre,
-            "txtemail"  => $valemail,
-            "imagen"    => $valimagen
+            "txtapellido1"  => $valapellido1,
+            "txtapellido2"  => $valapellido2,
+            "txttelefono"  => $valtelefono,
+            "txtdireccion"  => $valdireccion,
+            "txtrol_id" => $valrol_id,
+            "imagen" => $valimagen
          ],
          "mensajes" => $this->mensajes,
          "id" => $id

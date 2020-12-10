@@ -13,8 +13,6 @@
 
 <body>
 
-<?php if(isset($mensajes))var_dump($mensajes); ?>
-
     <!-- Navbar -->
   <nav class="navbar fixed-top navbar-expand-lg navbar-dark scrolling-navbar">
     <div class="container">

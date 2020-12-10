@@ -10,7 +10,7 @@
 
       <!--Creamos la tabla que utilizaremos para el listado:-->  
 
-      <table>
+      <table class="table table-striped">
         <tr>
         <th>Id</th>
             <th>NIF</th>
