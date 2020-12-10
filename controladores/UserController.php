@@ -113,9 +113,17 @@ class UserController extends BaseController
         var_dump($_POST);
       // Si se ha pulsado el botón guardar...
     if (isset($_POST) && !empty($_POST) && isset($_POST['submit'])) { // y hemos recibido las variables del formulario y éstas no están vacías...
+         
+         $nif = $_POST['txtnif'];
+         $nombre = $_POST['txtnombre'];
+         $apellido1 = $_POST['txtapellido1'];
+         $apellido2 = $_POST['txtapellido2'];
          $usuario = $_POST['txtlogin'];
-         $password = ($_POST['txtpass']);
+         $password = $_POST['txtpass'];
          $email = $_POST['txtemail'];
+         $telefono = $_POST['txttelefono'];
+         $direccion = $_POST['txtdireccion'];
+
          /* Realizamos la carga de la imagen en el servidor */
          //       Comprobamos que el campo tmp_name tiene un valor asignado para asegurar que hemos
          //       recibido la imagen correctamente
@@ -124,7 +132,7 @@ class UserController extends BaseController
          $imagen = NULL;
          $rol_id = "3";
 
-         var_dump($_POST);
+         
         
          if (isset($_FILES["imagen"]) && (!empty($_FILES["imagen"]["tmp_name"]))) {
             // Verificamos la carga de la imagen
@@ -159,9 +167,15 @@ class UserController extends BaseController
          // Si no se han producido errores realizamos el registro del usuario
          if (count($errores) == 0) {
             $resultModelo = $this->modelo->adduser([
+               'nif'=>$nif,
+               'nombre' => $nombre,
+               'apellido1' => $apellido1,
+               'apellido2' =>$apellido2,
                'usuario' => $usuario,
                "password" => $password,
                'email' => $email,
+               'telefono' => $telefono,
+               'direccion' => $direccion,
                'imagen' => $imagen,
                'rol_id' => $rol_id
             ]);
@@ -172,6 +186,8 @@ class UserController extends BaseController
                   "mensaje" => "El usuarios se registró correctamente!! :)"
                ];
             else :
+
+               $error++;
                $this->mensajes[] = [
                   "tipo" => "danger",
                   "mensaje" => "El usuario no pudo registrarse!! :( <br />({$resultModelo["error"]})"
@@ -216,12 +232,6 @@ class UserController extends BaseController
     }
          
     
-    
-
-      
-
-
-      
       if ($error > 0){
         $this->view->show("Nuevo",$parametros);
 

@@ -40,32 +40,17 @@
               <span class="sr-only">(current)</span>
             </a>
           </li>
-        </ul>
-
-        <!-- Right -->
-        <ul class="navbar-nav nav-flex-icons">
-          <li class="nav-item">
-            <a href="#" class="nav-link" target="_blank">
-              <i class="fab fa-facebook-f"></i>
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Administrar Horarios
+              <span class="sr-only">(current)</span>
             </a>
           </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link" target="_blank">
-              <i class="fab fa-twitter"></i>
-            </a>
-          </li>
-          <li class="nav-item">
-          <a href="#" class="nav-link" target="_blank">
-          <i class="fab fa-whatsapp"></i>
-            </a>
-          </li>
-          <li class="nav-item">
-          <a href="#" class="nav-link" target="_blank">
-          <i class="fab fa-instagram"></i>
+          <li class="nav-item active">
+            <a class="nav-link" href="?controller=User&accion=listado">Administrar usuarios
+              <span class="sr-only">(current)</span>
             </a>
           </li>
         </ul>
-
       </div>
 
     </div>
@@ -87,73 +72,23 @@
     <!--Grid column-->
     <div class="col-md-6 mb-4 white-text text-center text-md-left">
 
-      <h1 class="display-4 font-weight-bold">Learn Bootstrap 4 with MDB</h1>
+      <h1 class="display-4 font-weight-bold">Bienvenido a la ventana de Administrador</h1>
 
       <hr class="hr-light">
 
       <p>
-        <strong>Best & free guide of responsive web design</strong>
+        <strong><?php echo "Hola " . $_SESSION['nombre'] ?></strong>
       </p>
 
-      <p class="mb-4 d-none d-md-block">
-        <strong>The most comprehensive tutorial for the Bootstrap 4. Loved by over 500 000 users. Video and written versions
-          available. Create your own, stunning website.</strong>
-      </p>
+      
 
     </div>
     <!--Grid column-->
 
     <!--Grid column-->
     <div class="col-md-6 col-xl-5 mb-4 ml-5">
+<p> Ventana administrador</p>
 
-<!--Card-->
-<div class="card">
-
-  <!--Card content-->
-  <div class="card-body">
-
-    <!-- Form -->
-    <form action="?controller=Index&accion=login" method ="POST">
-      <!-- Heading -->
-      <h3 class="dark-grey-text text-center">
-        <strong>Acceder</strong>
-      </h3>
-      <hr>
-
-      <div class="md-form">
-        <i class="fas fa-user prefix grey-text"></i>
-        <input type="text" name="usuario" id="form3" class="form-control">
-        <label for="form3">Login</label>
-      </div>
-
-      <div class="md-form">
-        <i class="fas fa-pencil-alt prefix grey-text"></i>
-        <input type="password" name ="password" id="form8" class="form-control">
-        <label for="form8">Contraseña</label>
-      </div>
-
-      <div class="text-center">
-        <button type="submit" class="btn btn-indigo">Loguearse</button>
-        <hr>
-
-        <input type="checkbox" class="form-check-input" id="checkbox1">
-        <label for="checkbox1" class="form-check-label dark-grey-text">Recuerdame</label>
-
-
-        <fieldset class="form-check">
-        <!-- Register -->
-        <p>¿No estas registrado?
-         <!--Cambiar !-->
-            <a href="?controller=index&accion=mostrarRegistro">Registrarse</a>
-        </p>
-          
-        </fieldset>
-      </div>
-
-    </form>
-    <!-- Form -->
-
-  </div>
 
 </div>
 <!--/.Card-->

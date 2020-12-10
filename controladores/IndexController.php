@@ -62,7 +62,7 @@ class IndexController extends BaseController
                $_SESSION['nombre'] = $_POST['usuario'];
                
 
-               $this->view->show("Principal",$resultado);
+               $this->view->show("Admin",$resultado);
 
 
                //si el rol es 1 esta activo
@@ -72,8 +72,7 @@ class IndexController extends BaseController
 
                $_SESSION['nombre'] = $_POST['usuario'];
 
-               $this->view->show("HomeUser",$resultado);
-
+               $this->view->show("",$resultado);
 
                
                //si el rol es 3 esta inactivo
@@ -102,9 +101,7 @@ class IndexController extends BaseController
    public function mostrarRegistro()
    {
      
-    var_dump($_POST);
-    var_dump($_POST);
-    var_dump($_POST);
+
       $this->view->show("Nuevo");
 
 

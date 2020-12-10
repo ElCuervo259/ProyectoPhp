@@ -237,15 +237,25 @@ class UserModel extends BaseModel
           //Inicializamos la transacción
           $this->db->beginTransaction();
           //Definimos la instrucción SQL parametrizada 
-          $sql = "INSERT INTO usuarios(login,password,email,imagen,rol_id)
-                          VALUES (:usuario,:password,:email , :imagen, :rol_id)";
+          $sql = "INSERT INTO usuarios(nif,nombre,apellido1,apellido2,
+                                       login,password,email,telefono,
+                                       direccion,imagen,rol_id)
+                          VALUES (:nif,:nombre,:apellido1,:apellido2,:usuario,
+                          :password,:email,:telefono,:direccion,:imagen, :rol_id)";
           // Preparamos la consulta...
           $query = $this->db->prepare($sql);
+
           // y la ejecutamos indicando los valores que tendría cada parámetro
           $query->execute([
+             'nif' => $datos ["nif"],
+             'nombre' => $datos ["nombre"],
+             'apellido1' => $datos ["apellido1"],
+             'apellido2' => $datos ["apellido2"],
              'usuario' => $datos["usuario"],
              'password' => $datos["password"],
              'email' => $datos["email"],
+             'telefono' => $datos["telefono"],
+             'direccion' => $datos["direccion"],
              'imagen' => $datos["imagen"],
              'rol_id' => $datos["rol_id"]
           ]); //Supervisamos si la inserción se realizó correctamente... 
@@ -344,11 +354,10 @@ class UserModel extends BaseModel
 
                /*SE GUARDAN DATOS DEL USUARIO*/
 
-
-
                $return["correcto"] = TRUE;
                $return['datos'] = $numUsuarios; 
             }
+
 
          } // o no :(
       } catch (PDOException $ex) {
