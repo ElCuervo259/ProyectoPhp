@@ -18,7 +18,7 @@
     <div class="container">
 
       <!-- Brand -->
-      <a class="navbar-brand" href="https://mdbootstrap.com/docs/jquery/" target="_blank">
+      <a class="navbar-brand" href="" target="">
         <strong>Gimnasio virtual</strong>
       </a>
 
@@ -34,29 +34,49 @@
         <!-- Left -->
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
-            <a class="nav-link" href="#">Home
+            <a class="nav-link" href="?controller=Index&accion=regresoHome">Home
               <span class="sr-only">(current)</span>
             </a>
           </li>
           <li class="nav-item active">
-            <a class="nav-link" href="#">Administrar Horarios
+            <a class="nav-link" href="?controller=Home&accion=listadoActividades">Administrar Horarios
               <span class="sr-only">(current)</span>
             </a>
           </li>
+          <li class="nav-item active">
+                <a class="nav-link" href="?controller=Home&accion=añadirActividad">Añadir Actividad
+                  <span class="sr-only">(current)</span>
+                </a>
+              </li>
           <li class="nav-item active">
             <a class="nav-link" href="?controller=User&accion=listado">Administrar usuarios
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+
+          <li class="nav-item active">
+            <a class="nav-link" href="?controller=Reservas&accion=listadoReservas">Administrar Reservas
               <span class="sr-only">(current)</span>
             </a>
           </li>
         </ul>
       </div>
 
+      <ul class="navbar-nav nav-flex-icons">
+      <li class="nav-item active">
+            <a class="nav-link" href="?controller=Home&accion=cerrarSesion">Cerrar Sesion
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+          
+      </ul>
+
     </div>
   </nav>
   <!-- Navbar -->
 
   <!-- Full Page Intro -->
-  <div class="view full-page-intro" style="background-image: url(images/gym.jpg); background-repeat: no-repeat; background-size: cover; min-height: 120vh;">
+  <div class="view full-page-intro" style="background-image: url(assets/images/gym.jpg); background-repeat: no-repeat; background-size: cover; min-height: 120vh;">
 
 <!-- Mask & flexbox options-->
 <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
@@ -85,7 +105,6 @@
 
     <!--Grid column-->
     <div class="col-md-6 col-xl-5 mb-4 ml-5">
-<p> Ventana administrador</p>
 
 
 </div>

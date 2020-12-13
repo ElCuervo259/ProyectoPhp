@@ -1,10 +1,13 @@
+<!DOCTYPE html>
 <html>
   <head>
     <?php require_once 'includes/head.php'; ?>
-</head>
-  <body >
+  </head>
+  <body class="cuerpo">
+    <div class="container centrar">
+      <div class="container cuerpo text-center mt-5">	
 
-     <!-- Navbar -->
+    <!-- Navbar -->
   <nav class="navbar fixed-top navbar-expand-lg navbar-dark scrolling-navbar">
     <div class="container">
 
@@ -66,72 +69,69 @@
   </nav>
   <!-- Navbar -->
 
-
+      <!-- Full Page Intro -->
 
       </br>
       </br>
       </br>
       
-        
-
       <?php // Mostramos los mensajes procedentes del controlador que se hayn generado
             foreach ($mensajes as $mensaje) : ?> 
-             <div class="alert alert alert-<?= $mensaje["tipo"] ?>"><?= $mensaje["mensaje"] ?></div>
+             <div class="alert alert-<?= $mensaje["tipo"] ?>"><?= $mensaje["mensaje"] ?></div>
       <?php endforeach; ?>
-      <!--Creamos la tabla que utilizaremos para el listado:-->  
+      <form action="?controller=Home&accion=añadirActividad" method="post" enctype="multipart/form-data">
+        <!-- Rellenamos los campos con los valores recibidos desde el controlador -->
+        <label for="txtnombre">Nombre
+          <input type="text" class="form-control" name="txtnombre"></label>
+        <br/>
 
-      <table class="table table-striped">
-        <tr>
-        <th>Id</th>
-            <th>NIF</th>
-          <th>Nombre</th>
-          <th>Apellido1</th>
-          <th>Apellido2</th>
-          <th>Foto</th>
-          <th>Login</th>
-          <th>Password</th>
-          <th>Email</th>
-          <th>Telefono</th>
-          <th>Direccion</th>
-          <th>Rol</th>
-          <!-- Añadimos una columna para las operaciones que podremos realizar con cada registro -->
-          <th>Operaciones</th>
-        </tr>
-        <!--Los datos a listar están almacenados en $parametros["datos"], que lo recibimos del controlador-->
-        <?php foreach ($datos as $d) : ?>
-          <!--Mostramos cada registro en una fila de la tabla-->
-          <tr>
-          <td><?= $d["id"] ?></td>
-          <td><?= $d["nif"] ?></td>
-          <td><?= $d["nombre"] ?></td> 
-            <td><?= $d["apellido1"] ?></td>
-            <td><?= $d["apellido2"] ?></td>
-            <?php if ($d["imagen"] !== NULL) : ?>
-              <td><img src="fotos/<?= $d['imagen'] ?>" width="40" /></td>
-            <?php else : ?>
-              <td>----</td>
-            <?php endif; ?>
-            <td><?= $d["login"] ?></td>
-            <td><?= $d["password"] ?></td>
-            <td><?= $d["email"] ?></td>
-            <td><?= $d["telefono"] ?></td>
-            <td><?= $d["direccion"] ?></td>
+        <label for="txtaforo">Aforo
+          <input type="number" class="form-control" name="txtaforo"></label>
+        <br/>
 
-            <?php if ($d["rol_id"] == 0) : ?>
-              <td>Administrador</td>
-            <?php elseif($d["rol_id"] == 1) : ?>
-              <td>Usuario Validado</td>
-            <?php elseif($d["rol_id"] == 3) : ?>
-              <td>Usuario No validado</td>
-            <?php endif; ?>
-            
-            <!-- Enviamos a actuser.php, mediante GET, el id del registro que deseamos editar o eliminar: -->
-            <td><a href="?controller=user&accion=actuser&id=<?= $d['id'] ?>"><i class="fas fa-edit"></i> Editar </a><a href="?controller=user&accion=deluser&id=<?= $d['id'] ?>"><i class="fas fa-trash-alt"></i> Eliminar</a></td>
-          </tr>
-        <?php endforeach; ?>
-      </table>
-              
+        <div class="form-group">
+        <label for="dia">Dia:</label>
+        <select class="form-control" id="dia" name="selectDia">
+            <option>lunes</option>
+            <option>martes</option>
+            <option>miercoles</option>
+            <option>jueves</option>
+            <option>viernes</option>
+            <option>sabado</option>
+        </select>
+        </div>
 
+        <div class="form-group">
+        <label for="hora">Hora Inicio:</label>
+        <select class="form-control" id="hora" name ="selectHora_inicio">
+            <option>07:00</option>
+            <option>07:30</option>
+            <option>08:00</option>
+            <option>08:30</option>
+            <option>09:00</option>
+            <option>09:30</option>
+            <option>10:00</option>
+            <option>10:30</option>
+            <option>11:00</option>
+            <option>11:30</option>
+            <option>12:00</option>
+            <option>12:30</option>
+            <option>13:00</option>
+            <option>13:30</option>
+            <option>14:00</option>
+            <option>14:30</option>
+            <option>15:00</option>
+            <option>15:30</option>
+            <option>16:00</option>
+        </select>
+        </div>
+
+        
+        <!--Creamos un campo oculto para mantener el valor del id que deseamos modificar cuando pulsemos el botón actualizar-->  
+        <input type="hidden" name="id" value="<?php echo $id; ?>">
+        <br/>
+        <input type="submit" value="Añadir Actividad" name="submit" class="btn btn-success">
+      </form>
     </div>
   </body>
 </html>

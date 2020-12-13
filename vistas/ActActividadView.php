@@ -79,41 +79,55 @@
             foreach ($mensajes as $mensaje) : ?> 
              <div class="alert alert-<?= $mensaje["tipo"] ?>"><?= $mensaje["mensaje"] ?></div>
       <?php endforeach; ?>
-      <form action="?controller=User&accion=actuser" method="post" enctype="multipart/form-data">
+      <form action="?controller=Home&accion=actualizarActividad" method="post" enctype="multipart/form-data">
         <!-- Rellenamos los campos con los valores recibidos desde el controlador -->
-        <label for="txtnombre">Nombre
-          <input type="text" class="form-control" name="txtnombre" value="<?= $datos["txtnombre"] ?>" required></label>
+        <label for="txtnombre">Nombre </label>
+
+          <input type="text" class="form-control" name="txtnombre" value="<?php if(isset($datos["txtnombre"])){ echo $datos["txtnombre"];}?>" required>
         <br/>
 
-        <label for="txtnombre">Apellido1
-          <input type="text" class="form-control" name="txtapellido1" value="<?= $datos["txtapellido1"] ?>" required></label>
+        <label for="txtaforo">Aforo</label>
+          <input type="number" class="form-control" name="txtaforo" value="<?php if(isset($datos["txtnombre"])){ echo $datos["txtaforo"];}?>" required>
         <br/>
 
-        <label for="txtnombre">Apellido2
-          <input type="text" class="form-control" name="txtapellido2" value="<?= $datos["txtapellido2"] ?>" required></label>
-        <br/>
+        <div class="form-group">
+        <label for="dia">Dia:</label>
+        <select class="form-control" id="dia" name="selectDia">
+            <option>lunes</option>
+            <option>martes</option>
+            <option>miercoles</option>
+            <option>jueves</option>
+            <option>viernes</option>
+            <option>sabado</option>
+        </select>
+        </div>
 
-        <label for="txtnombre">Telefono
-          <input type="text" class="form-control" name="txttelefono" value="<?= $datos["txttelefono"] ?>" required></label>
-        <br/>
+        <div class="form-group">
+        <label for="hora">Hora Inicio:</label>
+        <select class="form-control" id="hora" name ="selectHora_inicio">
+            <option>07:00</option>
+            <option>07:30</option>
+            <option>08:00</option>
+            <option>08:30</option>
+            <option>09:00</option>
+            <option>09:30</option>
+            <option>10:00</option>
+            <option>10:30</option>
+            <option>11:00</option>
+            <option>11:30</option>
+            <option>12:00</option>
+            <option>12:30</option>
+            <option>13:00</option>
+            <option>13:30</option>
+            <option>14:00</option>
+            <option>14:30</option>
+            <option>15:00</option>
+            <option>15:30</option>
+            <option>16:00</option>
+        </select>
+        </div>
 
-        <label for="txtnombre">Direccion
-          <input type="text" class="form-control" name="txtdireccion" value="<?= $datos["txtdireccion"] ?>" required></label>
-        <br/>
-
-        <label for="txtnombre">Rol
-          <input type="text" class="form-control" name="txtrol_id" value="<?= $datos["txtrol_id"] ?>" required></label>
-        <br/>
-
-
-
-        <?php if ($datos["imagen"] != null && $datos["imagen"] != "") { ?>
-          </br>Imagen del Perfil: <img src="fotos/<?= $datos["imagen"] ?>" width="60" /></br>
-        <?php } ?>
-        </br>
-        <label for="imagen">Actualizar imagen de perfil:
-          <input type="file" name="imagen" class="form-control" value="<?= $datos["imagen"] ?>" /></label>
-        </br>
+        
         <!--Creamos un campo oculto para mantener el valor del id que deseamos modificar cuando pulsemos el botón actualizar-->  
         <input type="hidden" name="id" value="<?php echo $id; ?>">
         <br/>

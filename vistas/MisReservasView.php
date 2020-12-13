@@ -25,43 +25,35 @@
         <!-- Left -->
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
-            <a class="nav-link" href="?controller=Index&accion=regresoHome">Home
+            <a class="nav-link" href="?controller=Index&accion=regresoHomeUser">Home
               <span class="sr-only">(current)</span>
             </a>
           </li>
           <li class="nav-item active">
-            <a class="nav-link" href="?controller=Home&accion=listadoActividades">Administrar Horarios
+            <a class="nav-link" href="?controller=Home&accion=listadoActividadesUsuarios">Horario de clases
               <span class="sr-only">(current)</span>
             </a>
           </li>
           <li class="nav-item active">
-                <a class="nav-link" href="?controller=Home&accion=añadirActividad">Añadir Actividad
-                  <span class="sr-only">(current)</span>
-                </a>
-              </li>
-          <li class="nav-item active">
-            <a class="nav-link" href="?controller=User&accion=listado">Administrar usuarios
+            <a class="nav-link" href="?controller=Home&accion=listadoActividadesUsuariosInscripcion">Apuntarme a Clases
               <span class="sr-only">(current)</span>
             </a>
           </li>
-
-          <li class="nav-item active">
-            <a class="nav-link" href="?controller=Reservas&accion=listadoReservas">Administrar Reservas
+        <li class="nav-item active">
+            <a class="nav-link" href="?controller=Reservas&accion=misReservas">Mis Reservas
               <span class="sr-only">(current)</span>
             </a>
           </li>
         </ul>
-      </div>
 
-      <ul class="navbar-nav nav-flex-icons">
-      <li class="nav-item active">
+        <ul class="navbar-nav nav-flex-icons">
+          <li class="nav-item active">
             <a class="nav-link" href="?controller=Home&accion=cerrarSesion">Cerrar Sesion
               <span class="sr-only">(current)</span>
             </a>
           </li>
-          
       </ul>
-
+      </div>
     </div>
   </nav>
   <!-- Navbar -->
@@ -73,28 +65,24 @@
       </br>
       
         
+      
+      <!--Mostramos los mensajes que se hayan generado al realizar el listado-->
 
       <?php // Mostramos los mensajes procedentes del controlador que se hayn generado
             foreach ($mensajes as $mensaje) : ?> 
              <div class="alert alert alert-<?= $mensaje["tipo"] ?>"><?= $mensaje["mensaje"] ?></div>
       <?php endforeach; ?>
+
       <!--Creamos la tabla que utilizaremos para el listado:-->  
 
       <table class="table table-striped">
         <tr>
-        <th>Id</th>
-            <th>NIF</th>
-          <th>Nombre</th>
-          <th>Apellido1</th>
-          <th>Apellido2</th>
-          <th>Foto</th>
-          <th>Login</th>
-          <th>Password</th>
-          <th>Email</th>
-          <th>Telefono</th>
-          <th>Direccion</th>
-          <th>Rol</th>
-          <!-- Añadimos una columna para las operaciones que podremos realizar con cada registro -->
+          <th>Id Reserva</th>
+          <th>Nombre Actividad</th>
+          <th>Dia Actividad</th>
+          <th>Hora Actividad</th>
+          <th>Nombre Usuario</th>
+          <th>fecha Reserva</th>
           <th>Operaciones</th>
         </tr>
         <!--Los datos a listar están almacenados en $parametros["datos"], que lo recibimos del controlador-->
@@ -102,31 +90,14 @@
           <!--Mostramos cada registro en una fila de la tabla-->
           <tr>
           <td><?= $d["id"] ?></td>
-          <td><?= $d["nif"] ?></td>
-          <td><?= $d["nombre"] ?></td> 
-            <td><?= $d["apellido1"] ?></td>
-            <td><?= $d["apellido2"] ?></td>
-            <?php if ($d["imagen"] !== NULL) : ?>
-              <td><img src="fotos/<?= $d['imagen'] ?>" width="40" /></td>
-            <?php else : ?>
-              <td>----</td>
-            <?php endif; ?>
-            <td><?= $d["login"] ?></td>
-            <td><?= $d["password"] ?></td>
-            <td><?= $d["email"] ?></td>
-            <td><?= $d["telefono"] ?></td>
-            <td><?= $d["direccion"] ?></td>
-
-            <?php if ($d["rol_id"] == 0) : ?>
-              <td>Administrador</td>
-            <?php elseif($d["rol_id"] == 1) : ?>
-              <td>Usuario Validado</td>
-            <?php elseif($d["rol_id"] == 3) : ?>
-              <td>Usuario No validado</td>
-            <?php endif; ?>
-            
+          <td><?= $d["nombre"] ?></td>
+          <td><?= $d["dia"] ?></td>
+          <td><?= $d["hora_inicio"] ?></td>
+          <td><?= $d["login"] ?></td> 
+          <td><?= $d["fecha_reserva"] ?></td>
+  
             <!-- Enviamos a actuser.php, mediante GET, el id del registro que deseamos editar o eliminar: -->
-            <td><a href="?controller=user&accion=actuser&id=<?= $d['id'] ?>"><i class="fas fa-edit"></i> Editar </a><a href="?controller=user&accion=deluser&id=<?= $d['id'] ?>"><i class="fas fa-trash-alt"></i> Eliminar</a></td>
+            <td><a href="?controller=Reservas&accion=delReservaUser&id=<?= $d['id'] ?>"><i class="fas fa-trash-alt"></i> Eliminar Reserva</a></td>
           </tr>
         <?php endforeach; ?>
       </table>

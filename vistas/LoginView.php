@@ -6,8 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>Gimnasio</title>
-    
+
+
     <?php require_once 'includes/head.php'; ?>
+    
+   <? require_once "includes/recaptchalib.php"; ?>
+
+   <script src="https://www.google.com/recaptcha/api.js?hl=es" async defer></script>
 
 </head>
 
@@ -20,7 +25,7 @@
     <div class="container">
 
       <!-- Brand -->
-      <a class="navbar-brand" href="https://mdbootstrap.com/docs/jquery/" target="_blank">
+      <a class="navbar-brand" href="#" >
         <strong>Gimnasio virtual</strong>
       </a>
 
@@ -33,30 +38,26 @@
       <!-- Links -->
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
-        <!-- Left -->
-        <ul class="navbar-nav mr-auto">
-          
-        </ul>
 
         <!-- Right -->
         <ul class="navbar-nav nav-flex-icons">
           <li class="nav-item">
-            <a href="#" class="nav-link" target="_blank">
+            <a href="#" class="nav-link" target="#">
               <i class="fab fa-facebook-f"></i>
             </a>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link" target="_blank">
+            <a href="#" class="nav-link" target="#">
               <i class="fab fa-twitter"></i>
             </a>
           </li>
           <li class="nav-item">
-          <a href="#" class="nav-link" target="_blank">
+          <a href="#" class="nav-link" target="#">
           <i class="fab fa-whatsapp"></i>
             </a>
           </li>
           <li class="nav-item">
-          <a href="#" class="nav-link" target="_blank">
+          <a href="#" class="nav-link" target="#">
           <i class="fab fa-instagram"></i>
             </a>
           </li>
@@ -69,7 +70,7 @@
   <!-- Navbar -->
 
   <!-- Full Page Intro -->
-  <div class="view full-page-intro" style="background-image: url(images/gym.jpg); background-repeat: no-repeat; background-size: cover; min-height: 120vh;">
+  <div class="view full-page-intro" style="background-image: url(assets/images/gym.jpg); background-repeat: no-repeat; background-size: cover; min-height: 120vh;">
 
 <!-- Mask & flexbox options-->
 <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
@@ -83,17 +84,18 @@
     <!--Grid column-->
     <div class="col-md-6 mb-4 white-text text-center text-md-left">
 
-      <h1 class="display-4 font-weight-bold">Learn Bootstrap 4 with MDB</h1>
+      <h1 class="display-4 font-weight-bold">Bienvenido a tu Gimnasio Virtual</h1>
 
       <hr class="hr-light">
 
       <p>
-        <strong>Best & free guide of responsive web design</strong>
+        <strong>El mejor asesoramiento a tu servicio con los mejores Profesionales</strong>
       </p>
 
       <p class="mb-4 d-none d-md-block">
-        <strong>The most comprehensive tutorial for the Bootstrap 4. Loved by over 500 000 users. Video and written versions
-          available. Create your own, stunning website.</strong>
+        <strong>Unete ahora a nosotros y disfrutaras de multitud de clases dirigidas y
+          unas excelentes instalaciones
+        </strong>
       </p>
 
     </div>
@@ -118,22 +120,40 @@
 
       <div class="md-form">
         <i class="fas fa-user prefix grey-text"></i>
-        <input type="text" name="usuario" id="form3" class="form-control">
+        <input type="text" name="usuario" id="form3" class="form-control" value="<?php if(isset($_COOKIE['usuario'])){echo $_COOKIE['usuario'];}?>">
         <label for="form3">Login</label>
       </div>
 
       <div class="md-form">
         <i class="fas fa-pencil-alt prefix grey-text"></i>
-        <input type="password" name ="password" id="form8" class="form-control">
+        <input type="password" name ="password" id="form8" class="form-control " value="<?php if(isset($_COOKIE['password'])){echo $_COOKIE['password'];}?>">
         <label for="form8">Contraseña</label>
       </div>
+
+                  
+      <div class="md-form pl-5">
+          <div class="g-recaptcha" data-sitekey=6LcpqgQaAAAAAL2E7ff580mLkQDxdWMs65CKGLRI></div>
+      </div>
+
+
+
+      <?php // Mostramos los mensajes procedentes del controlador que se hayn generado
+
+      if(isset($mensajes)){
+        foreach ($mensajes as $mensaje) : ?> 
+          <div class="alert alert-<?= $mensaje["tipo"] ?>"><?= $mensaje["mensaje"] ?></div>
+   <?php endforeach; 
+      }
+    ?>
+    
+            
 
       <div class="text-center">
         <button type="submit" class="btn btn-indigo">Loguearse</button>
         <hr>
 
-        <input type="checkbox" class="form-check-input" id="checkbox1">
-        <label for="checkbox1" class="form-check-label dark-grey-text">Recuerdame</label>
+        <input type="checkbox" class="form-check-input" id="checkbox1" name ="recuerdo" <?php if(isset($_COOKIE['recuerdo'])){echo "checked";} ?>>
+        <label for="checkbox1" class="form-check-label dark-grey-text" >Recuerdame</label>
 
 
         <fieldset class="form-check">

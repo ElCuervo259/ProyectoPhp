@@ -1,5 +1,7 @@
 <?php
 
+session_start();
+
 
 
 /**
@@ -36,8 +38,35 @@ class IndexController extends BaseController
     */
    public function login()
    {
-      
-      
+
+   $secret = "6LcpqgQaAAAAAFLLOc2FluvGr1MRUsUf3SnPOwRl";
+ $response = null;
+ // comprueba la clave secreta
+ if (isset($_POST['g-recaptcha-response'])) {
+   $captcha = $_POST['g-recaptcha-response']; 
+   $url = 'https://www.google.com/recaptcha/api/siteverify';
+   $data = array(
+   'secret' => $secret,
+   'response' => $captcha,
+   'remoteip' => $_SERVER['REMOTE_ADDR']
+   );
+
+   $curlConfig = array(
+   CURLOPT_URL => $url,
+   CURLOPT_POST => true,
+   CURLOPT_RETURNTRANSFER => true,
+   CURLOPT_POSTFIELDS => $data
+   );
+
+   $ch = curl_init();
+   curl_setopt_array($ch, $curlConfig);
+   $response = curl_exec($ch);
+   curl_close($ch);
+   }
+
+   $jsonResponse = json_decode($response);
+
+   if ($jsonResponse->success === true) {
 
       if (!isset($_POST['submit'])) {
          
@@ -46,52 +75,117 @@ class IndexController extends BaseController
             $this->view->show("Login");
          }else{
 
-            $usuarios = new UserModel();
+               $usuarios = new UserModel();
 
-            $usuario = $_POST['usuario'];
-            $password = $_POST['password'];
+               $usuario = $_POST['usuario'];
+               $password = $_POST['password'];
 
-            $resultado = $usuarios ->login(['usuario' => $usuario,'password'=> $password]);
+               $resultado = $usuarios ->login(['usuario' => $usuario,'password'=> $password]);
 
-           
-            //si el rol es 0 es administrador
-            if($resultado['correcto']==true && $resultado['datos'][0]['rol_id'] == 0 ){
-
-               session_start();
-
-               $_SESSION['nombre'] = $_POST['usuario'];
-               
-
-               $this->view->show("Admin",$resultado);
-
-
-               //si el rol es 1 esta activo
-            }elseif($resultado['correcto']==true && $resultado['datos'][0]['rol_id'] == 1){
-
-               
-
-               $_SESSION['nombre'] = $_POST['usuario'];
-
-               $this->view->show("User",$resultado);
-
-               
-               //si el rol es 3 esta inactivo
-            }elseif ($resultado['correcto']==true && $resultado['datos'][0]['rol_id']==3){
-
-            $this->view->show("Login");
             
-            }else{
-               $this->view->show("Login");
-            } 
+               //si el rol es 0 es administrador
+               if($resultado['correcto']==true && $resultado['datos'][0]['rol_id'] == 0 ){
+
+
+                  $_SESSION['nombre'] = $_POST['usuario'];
+                  $_SESSION['id'] = $resultado['datos'][0]['id'];
+
+                  if(isset($_POST['recuerdo']) && ($_POST['recuerdo']=="on"))
+                     {//si seleccionamos recuerda
+                        setcookie('usuario',$_POST['usuario'],time()+(15*24*60*60));
+                        setcookie('password',$_POST['password'],time()+(15*24*60*60));
+                        setcookie('recuerdo',$_POST['recuerdo'],time()+(15*24*60*60));
+                     } else{//si no seleccionamos recuerda
+                        if(isset($_COOKIE['usuario'])){
+                              setcookie('usuario',"");
+                        }
+                        if(isset($_COOKIE['password'])){
+                              setcookie('password',"");
+                        }
+                        if(isset($_COOKIE['recuerdo'])){
+                              setcookie('recuerdo',"");
+                        }
+                     }
+
+                  $this->view->show("Admin",$resultado);
+
+
+                  //si el rol es 1 esta activo
+               }elseif($resultado['correcto']==true && $resultado['datos'][0]['rol_id'] == 1){
+
+                  
+
+                  $_SESSION['nombre'] = $_POST['usuario'];
+                  $_SESSION['id'] = $resultado['datos'][0]['id'];
+
+                  if(isset($_POST['recuerdo']) && ($_POST['recuerdo']=="on"))
+                     {//si seleccionamos recuerda
+                        setcookie('usuario',$_POST['usuario'],time()+(15*24*60*60));
+                        setcookie('password',$_POST['password'],time()+(15*24*60*60));
+                        setcookie('recuerdo',$_POST['recuerdo'],time()+(15*24*60*60));
+                     } else{//si no seleccionamos recuerda
+                        if(isset($_COOKIE['usuario'])){
+                              setcookie('usuario',"");
+                        }
+                        if(isset($_COOKIE['password'])){
+                              setcookie('password',"");
+                        }
+                        if(isset($_COOKIE['recuerdo'])){
+                              setcookie('recuerdo',"");
+                        }
+                     }
+
+                  $this->view->show("User",$resultado);
+
+                  
+                  //si el rol es 3 esta inactivo
+               }elseif ($resultado['correcto']==true && $resultado['datos'][0]['rol_id']==3){
+
+
+                  $this->mensajes[] = [
+                     "tipo" => "danger",
+                     "mensaje" => "El administrador debe confirmar tu contraseña"
+                  ];
+      
+                  $parametros["mensajes"] = $this->mensajes;
+
+
+               $this->view->show("Login",$resultado);
+               
+               }else{
+                  $this->view->show("Login");
+               } 
+
+            }
+
+        }
+   
+         }else{
+
+            $this->mensajes[] = [
+               "tipo" => "danger",
+               "mensaje" => "No se pulso captcha"
+            ];
+
+            $parametros["mensajes"] = $this->mensajes;
+
+            $this->view->show("Login",$parametros);
 
          }
+
+
 
 
 
          }
       
      
+   
+   public function mostrarIndex(){
+
+      $this->view->show("Login");
    }
+
 
    /**
     * Podemos implementar la acción registro de usuarios
@@ -112,4 +206,37 @@ class IndexController extends BaseController
    /**
     * Otras acciones que puedan ser necesarias
     */
+
+    /**
+     * Funcion para que el administrador regrese a la ventana de inicio
+     *
+     * @return void
+     */
+    public function regresoHome()
+   {
+
+      
+      $this->view->show("Admin");
+
+   }
+
+   
+
+
+
+   public function regresoHomeUser()
+   {
+
+      
+      $this->view->show("User");
+
+   }
+
+   public function mostrarActividades(){
+
+      $this->view->show("Horario");
+   }
+
+
+
 }

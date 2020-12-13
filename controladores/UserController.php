@@ -1,9 +1,12 @@
 <?php
 
+session_start();
+
 /**
  * Incluimos los modelos que necesite este controlador
  */
 require_once MODELS_FOLDER . 'UserModel.php';
+
 
 /**
  * Clase controlador que será la encargada de obtener, para cada tarea, los datos
@@ -29,6 +32,7 @@ class UserController extends BaseController
       $this->modelo = new UserModel();
       $this->mensajes = [];
    }
+
 
    /**
     * Método que obtiene de la base de datos el listado de usuarios y envía dicha
@@ -114,15 +118,15 @@ class UserController extends BaseController
       // Si se ha pulsado el botón guardar...
     if (isset($_POST) && !empty($_POST) && isset($_POST['submit'])) { // y hemos recibido las variables del formulario y éstas no están vacías...
          
-         $nif = $_POST['txtnif'];
-         $nombre = $_POST['txtnombre'];
-         $apellido1 = $_POST['txtapellido1'];
-         $apellido2 = $_POST['txtapellido2'];
-         $usuario = $_POST['txtlogin'];
+         $nif =  filter_var($_POST['txtnif'],FILTER_SANITIZE_STRING);
+         $nombre = filter_var($_POST['txtnombre'],FILTER_SANITIZE_STRING);
+         $apellido1 = filter_var($_POST['txtapellido1'],FILTER_SANITIZE_STRING);
+         $apellido2 = filter_var($_POST['txtapellido2'],FILTER_SANITIZE_STRING);
+         $usuario = filter_var($_POST['txtlogin'],FILTER_SANITIZE_STRING);
          $password = $_POST['txtpass'];
-         $email = $_POST['txtemail'];
-         $telefono = $_POST['txttelefono'];
-         $direccion = $_POST['txtdireccion'];
+         $email = filter_var($_POST['txtemail'],FILTER_SANITIZE_EMAIL);
+         $telefono = filter_var($_POST['txttelefono'],FILTER_SANITIZE_NUMBER_INT);
+         $direccion = filter_var($_POST['txtdireccion'],FILTER_SANITIZE_STRING);
 
          /* Realizamos la carga de la imagen en el servidor */
          //       Comprobamos que el campo tmp_name tiene un valor asignado para asegurar que hemos
@@ -164,8 +168,91 @@ class UserController extends BaseController
          }
 
 
+         if(!preg_match("/[0-9]{7,8}[A-Z]/",$nif)){
+            $this->mensajes[] = [
+
+               "tipo" => "danger",
+               "mensaje" => "Formato de Dni incorrecto"
+            ];
+
+            $parametros = ["mensajes" => $this->mensajes];
+            $error++;
+         }
+
+
+         if(!preg_match("/[a-zA-Z]{3,15}$/",$nombre)){
+            $this->mensajes[] = [
+
+               "tipo" => "danger",
+               "mensaje" => "El nombre no puede contener numeros ni ser mayor que 15"
+            ];
+
+            $parametros = ["mensajes" => $this->mensajes];
+            $error++;
+         }
+
+         if(!preg_match("/[a-zA-Z]{3,15}$/",$apellido1)){
+            $this->mensajes[] = [
+
+               "tipo" => "danger",
+               "mensaje" => "El apellido no puede contener numeros ni ser mayor que 15"
+            ];
+
+            $parametros = ["mensajes" => $this->mensajes];
+            $error++;
+         }
+
+         if(!preg_match("/[a-zA-Z]{3,15}$/",$apellido2)){
+            $this->mensajes[] = [
+
+               "tipo" => "danger",
+               "mensaje" => "El apellido no puede contener numeros ni ser mayor que 15"
+            ];
+
+            $parametros = ["mensajes" => $this->mensajes];
+            $error++;
+         }
+
+         if(!preg_match("/[a-zA-Z0-9]{3,15}$/",$usuario)){
+            $this->mensajes[] = [
+
+               "tipo" => "danger",
+               "mensaje" => "El nombre de usuario no puede ser mayor que 15"
+            ];
+
+            $parametros = ["mensajes" => $this->mensajes];
+            $error++;
+         }
+
+         if(!preg_match("/[a-zA-Z0-9]{3,15}$/",$usuario)){
+            $this->mensajes[] = [
+
+               "tipo" => "danger",
+               "mensaje" => "El nombre de usuario no puede ser mayor que 15"
+            ];
+
+            $parametros = ["mensajes" => $this->mensajes];
+            $error++;
+         }
+
+         if(!preg_match("/[0-9]{9}$/",$telefono)){
+            $this->mensajes[] = [
+
+               "tipo" => "danger",
+               "mensaje" => "El nombre de usuario no puede ser mayor que 15"
+            ];
+
+            $parametros = ["mensajes" => $this->mensajes];
+            $error++;
+         }
+
+
+
+         if ($error > 0) {$this->view->show("Nuevo",$parametros);}
+
+
          // Si no se han producido errores realizamos el registro del usuario
-         if (count($errores) == 0) {
+         if ($error == 0) {
             $resultModelo = $this->modelo->adduser([
                'nif'=>$nif,
                'nombre' => $nombre,
@@ -183,14 +270,14 @@ class UserController extends BaseController
             if ($resultModelo["correcto"]) :
                $this->mensajes[] = [
                   "tipo" => "success",
-                  "mensaje" => "El usuarios se registró correctamente!! :)"
+                  "mensaje" => "El usuario se registró correctamente. Espere a ser Activado por un administrador"
                ];
             else :
 
                $error++;
                $this->mensajes[] = [
                   "tipo" => "danger",
-                  "mensaje" => "El usuario no pudo registrarse!! :( <br />({$resultModelo["error"]})"
+                  "mensaje" => "El usuario no pudo registrarse<br />({$resultModelo["error"]})"
                ];
             endif;
 
@@ -231,15 +318,7 @@ class UserController extends BaseController
             ];
     }
          
-    
-      if ($error > 0){
-        $this->view->show("Nuevo",$parametros);
-
-        //Volvemos a la pagina de Login
-      }else{
-        $this->view->show("Login",$parametros);
-      }
-      
+      $this->view->show("Login",$parametros);
    }
 
    /**
@@ -325,18 +404,18 @@ class UserController extends BaseController
             if ($resultModelo["correcto"]) :
                $this->mensajes[] = [
                   "tipo" => "success",
-                  "mensaje" => "El usuario se actualizó correctamente!! :)"
+                  "mensaje" => "El usuario se actualizó correctamente"
                ];
             else :
                $this->mensajes[] = [
                   "tipo" => "danger",
-                  "mensaje" => "El usuario no pudo actualizarse!! :( <br/>({$resultModelo["error"]})"
+                  "mensaje" => "El usuario no pudo actualizarse<br/>({$resultModelo["error"]})"
                ];
             endif;
          } else {
             $this->mensajes[] = [
                "tipo" => "danger",
-               "mensaje" => "Datos de registro de usuario erróneos!! :("
+               "mensaje" => "Datos de registro de usuario erróneos"
             ];
          }
 
@@ -360,7 +439,7 @@ class UserController extends BaseController
             if ($resultModelo["correcto"]) :
                $this->mensajes[] = [
                   "tipo" => "success",
-                  "mensaje" => "Los datos del usuario se obtuvieron correctamente!! :)"
+                  "mensaje" => "Los datos del usuario se obtuvieron correctamente"
                ];
                $valnombre = $resultModelo["datos"]["nombre"];
                $valapellido1 = $resultModelo["datos"]["apellido1"];
@@ -372,7 +451,7 @@ class UserController extends BaseController
             else :
                $this->mensajes[] = [
                   "tipo" => "danger",
-                  "mensaje" => "No se pudieron obtener los datos de usuario!! :( <br/>({$resultModelo["error"]})"
+                  "mensaje" => "No se pudieron obtener los datos de usuario<br/>({$resultModelo["error"]})"
                ];
             endif;
          }
@@ -396,4 +475,11 @@ class UserController extends BaseController
       //Mostramos la vista actuser
       $this->view->show("ActUser",$parametros);
    }
+
+
+
+   
+
+
+
 }

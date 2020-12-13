@@ -18,7 +18,7 @@
     <div class="container">
 
       <!-- Brand -->
-      <a class="navbar-brand" href="https://mdbootstrap.com/docs/jquery/" target="_blank">
+      <a class="navbar-brand" href="" target="">
         <strong>Gimnasio virtual</strong>
       </a>
 
@@ -34,29 +34,41 @@
         <!-- Left -->
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
-            <a class="nav-link" href="#">Home
+            <a class="nav-link" href="?controller=Index&accion=regresoHomeUser">Home
               <span class="sr-only">(current)</span>
             </a>
           </li>
           <li class="nav-item active">
-            <a class="nav-link" href="#">Horario de clases
+            <a class="nav-link" href="?controller=Home&accion=listadoActividadesUsuarios">Horario de clases
               <span class="sr-only">(current)</span>
             </a>
           </li>
           <li class="nav-item active">
-            <a class="nav-link" href="#">Apuntarme a Clases
+            <a class="nav-link" href="?controller=Home&accion=listadoActividadesUsuariosInscripcion">Apuntarme a Clases
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+        <li class="nav-item active">
+            <a class="nav-link" href="?controller=Reservas&accion=misReservas">Mis Reservas
               <span class="sr-only">(current)</span>
             </a>
           </li>
         </ul>
-      </div>
 
+        <ul class="navbar-nav nav-flex-icons">
+          <li class="nav-item active">
+            <a class="nav-link" href="?controller=Home&accion=cerrarSesion">Cerrar Sesion
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+      </ul>
+      </div>
     </div>
   </nav>
   <!-- Navbar -->
 
   <!-- Full Page Intro -->
-  <div class="view full-page-intro" style="background-image: url(images/gym.jpg); background-repeat: no-repeat; background-size: cover; min-height: 120vh;">
+  <div class="view full-page-intro" style="background-image: url(assets/images/gym.jpg); background-repeat: no-repeat; background-size: cover; min-height: 120vh;">
 
 <!-- Mask & flexbox options-->
 <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
@@ -75,7 +87,8 @@
       <hr class="hr-light">
 
       <p>
-        <strong><?php echo "Hola " . $_SESSION['nombre'] ?></strong>
+        <strong><?php echo "Bienvenido " . $_SESSION['nombre'] ?> Debido a motivos sanitarios, las clases comenzarán a las 07:00
+      y terminarán a las 16:30</strong>
       </p>
 
       
