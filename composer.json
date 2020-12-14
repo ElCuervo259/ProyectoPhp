@@ -1,0 +1,10 @@
+{
+    "name": "elcuervo/proyecto-php",
+    "authors": [{
+        "name": "ElCuervo259",
+        "email": "69595228+ElCuervo259@users.noreply.github.com"
+    }],
+    "require": {
+        "spipu/html2pdf": "*"
+    }
+}

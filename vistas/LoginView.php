@@ -29,6 +29,10 @@
         <strong>Gimnasio virtual</strong>
       </a>
 
+      <a class="navbar-brand" href="?controller=Home&accion=descargarHorario" >
+        <strong>Descarga Nuestro Horario</strong>
+      </a>
+
       <!-- Collapse -->
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
         aria-expanded="false" aria-label="Toggle navigation">

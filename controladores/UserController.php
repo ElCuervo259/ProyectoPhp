@@ -40,6 +40,9 @@ class UserController extends BaseController
     */
    public function listado()
    {
+
+
+      
       // Almacenamos en el array 'parametros[]'los valores que vamos a mostrar en la vista
       $parametros = [
          "tituloventana" => "Base de Datos con PHP y PDO",

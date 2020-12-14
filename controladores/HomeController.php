@@ -1,6 +1,9 @@
 <?php
 
 session_start();
+use Spipu\Html2Pdf\Html2Pdf;
+
+
 
 
 /**
@@ -16,6 +19,8 @@ require_once MODELS_FOLDER . 'ActividadModel.php';
  */
 class HomeController extends BaseController
 {
+
+   
 
    // El atributo $modelo es de la 'clase modelo' y será a través del que podremos 
    // acceder a los datos y las operaciones de la base de datos desde el controlador
@@ -464,6 +469,34 @@ class HomeController extends BaseController
             $this->view->show("addActividad",$parametros);
     
 
+      }
+
+
+
+      public function descargarHorario()
+      {
+   
+            $horario = new ActividadModel();
+            $horario = $horario->listadoHorario();
+            $horario = $horario["datos"];
+            
+            require 'vendor/autoload.php';
+   
+            $parametros = [
+               "tituloventana" => "Inicio",
+               "datos" => $horario
+   
+            ];
+
+            ob_start();
+            $this->view->show("descargaHorario", $parametros);
+            $html = ob_get_clean();
+            $html2pdf = new Html2Pdf('P', 'A4', 'es', 'true', 'UTF-8');
+            $html2pdf->writeHTML($html);
+            $html2pdf->output("horario_GymVirtual.pdf"); // Como parámetro opcional nombre de fichero a descargar
+            ob_end_clean();
+   
+   
       }
    
 

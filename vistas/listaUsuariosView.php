@@ -1,6 +1,7 @@
 <html>
   <head>
     <?php require_once 'includes/head.php'; ?>
+    
 </head>
   <body >
 
@@ -72,6 +73,7 @@
       </br>
       </br>
       
+      
         
 
       <?php // Mostramos los mensajes procedentes del controlador que se hayn generado
@@ -80,7 +82,8 @@
       <?php endforeach; ?>
       <!--Creamos la tabla que utilizaremos para el listado:-->  
 
-      <table class="table table-striped">
+      <table id = "dtBasicExample" class="table table-striped">
+      </style>
         <tr>
         <th>Id</th>
             <th>NIF</th>
@@ -129,9 +132,32 @@
             <td><a href="?controller=user&accion=actuser&id=<?= $d['id'] ?>"><i class="fas fa-edit"></i> Editar </a><a href="?controller=user&accion=deluser&id=<?= $d['id'] ?>"><i class="fas fa-trash-alt"></i> Eliminar</a></td>
           </tr>
         <?php endforeach; ?>
+
+
+        
+
       </table>
               
 
     </div>
+
+<!-- jQuery -->
+<script type="text/javascript" src="assets/js/jquery.min.js"></script>
+    <!-- Bootstrap tooltips -->
+    <script type="text/javascript" src="assets/js/popper.min.js"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
+    <!-- MDB core JavaScript -->
+    <script type="text/javascript" src="assets/js/mdb.min.js"></script>
+    <!-- Your custom scripts (optional) -->
+    <script type="text/javascript">
+          $(document).ready(function () {
+          $('#dtBasicExample').DataTable();
+          $('.dataTables_length').addClass('bs-select');
+          });
+    </script>
+    <!-- MDBootstrap Datatables  -->
+<script type="text/javascript" src="assets/js/addons/datatables.min.js"></script>
+
   </body>
 </html>
