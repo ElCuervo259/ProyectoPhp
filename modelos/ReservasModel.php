@@ -16,7 +16,12 @@ class ReservasModel extends BaseModel
 
 
 
-
+/**
+ * Funcion que permitirá al usuario apuntarse a una actividad
+ *
+ * @param [type] $datos recibirá los datos de la actividad y comprobará también si el usuario ya se apunto a esa actividad
+ * @return void
+ */
    public function apuntarseActividad($datos){
 
     $return = ['correcto' => FALSE ];
@@ -25,6 +30,7 @@ class ReservasModel extends BaseModel
       try {
          
 
+         //realizamos la consulta para comprobar si el usuario ya esta apuntado a esa actividad
          $sql2 = "SELECT * FROM reservas WHERE idActividad =:idActividad AND idUsuario =:idUsuario";
 
          
@@ -39,6 +45,7 @@ class ReservasModel extends BaseModel
 
             $return["correcto"] = FALSE;
 
+            //si no se ha apuntado a la actividad generaremos una nueva insecion
          }else{
 
             $sql = "INSERT into reservas VALUES (NULL,:idActividad,:idUsuario,current_date())";
@@ -67,7 +74,11 @@ class ReservasModel extends BaseModel
 
     }
 
-
+/**
+ * Funcion para que el administrador pueda consultar las reservas existentes
+ *
+ * @return void
+ */
 public function listarReservas(){
     $return = [
       "correcto" => FALSE,
@@ -92,7 +103,12 @@ public function listarReservas(){
    return $return;
 }
 
-
+/**
+ * Funcino que nos permitirá eliminar reservas ya existentes
+ *
+ * @param [type] $id
+ * @return void
+ */
 public function borrarReservas($id){
     // La función devuelve un array con dos valores:'correcto', que indica si la
        // operación se realizó correctamente, y 'mensaje', campo a través del cual le
@@ -127,13 +143,18 @@ public function borrarReservas($id){
    }
 
 
+   /**
+    * Funcion que permite al usaurio visualizar las reservas que ha realizado
+    *
+    * @return void
+    */
    public function listarMisReservas(){
       $return = [
         "correcto" => FALSE,
         "datos" => NULL,
         "error" => NULL
      ];
-     //Realizamos la consulta...
+     //Realizamos la consulta... comprobando el id del usuario
      try {  //Definimos la instrucción SQL  
         $sql = "SELECT reservas.id,usuarios.login,actividades.nombre,actividades.dia,actividades.hora_inicio,reservas.fecha_reserva FROM reservas  JOIN  usuarios ON usuarios.id = reservas.idUsuario
                                                                                                              JOIN  actividades ON actividades.id = reservas.idActividad

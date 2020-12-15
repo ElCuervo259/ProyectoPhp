@@ -18,7 +18,7 @@
 
 <body>
 
-<?php if(isset($mensajes))var_dump($mensajes); ?>
+<?php if(isset($mensajes)); ?>
 
     <!-- Navbar -->
   <nav class="navbar fixed-top navbar-expand-lg navbar-dark scrolling-navbar">

@@ -158,6 +158,12 @@ class ActividadModel extends BaseModel
 
 
 
+    /**
+     * Funcion para actualizar actividades ya existentes
+     *
+     * @param [type] $datos recibirá los datos de la actividad que vamos a modificar
+     * @return void
+     */
     public function actActividad($datos)
     {
        $return = [
@@ -194,6 +200,12 @@ class ActividadModel extends BaseModel
     }
 
 
+    /**
+     * Funcion para añadir nuesvas actividades a nuestro horario
+     *
+     * @param [type] $datos recibira los datos introducidos en los campos de nueva actividad
+     * @return void
+     */
     public function addActividad($datos){
       $return = [
          "correcto" => FALSE,
@@ -237,10 +249,10 @@ class ActividadModel extends BaseModel
 
 
     /**
- * Funcion que listará el horario en la tabla de horario de actividades
- *
- * @return void
- */
+    * Funcion comprobará si ya existe una actividad con el mismo dia y horario
+    *
+    * @return void
+    */
    public function comprobarHorario($datos)
    {
       $return = [

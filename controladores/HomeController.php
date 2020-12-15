@@ -160,7 +160,7 @@ class HomeController extends BaseController
     }
 
     /**
-     * Funcion que nos muestra el listado de actividades de la base de datos apra el usuario con la opcion de apuntarse 
+     * Funcion que nos muestra el listado de actividades de la base de datos para el usuario con la opcion de apuntarse 
      * a las actividades disponibles
      *
      * @return void
@@ -263,7 +263,7 @@ class HomeController extends BaseController
                $nuevodia = $_POST['selectDia'];
                $nuevohora_inicio = $_POST['selectHora_inicio'];
 
-      
+               //Llamada al modelo que comprobará si ya existe una actividad en el horario
                $resultModeloActividad = $this -> modelo ->comprobarHorario([
 
                   'dia' => $nuevodia,
@@ -271,6 +271,7 @@ class HomeController extends BaseController
 
                ]);
 
+               //si la consulta contiene una actividad ya existente
                if($resultModeloActividad['correcto']== FALSE ){
 
                   $this->mensajes[] = [
@@ -409,12 +410,11 @@ class HomeController extends BaseController
                   "mensajes" => $this->mensajes
                ];
 
-
                $this->view->show("addActividad",$parametros);
 
             }else{
 
-
+               //llamamos al modelo para añadir la actividad
                $resultModelo = $this->modelo->addActividad([
 
                   'nombre' => $nombre,
@@ -430,27 +430,20 @@ class HomeController extends BaseController
                      "mensaje" => "La actividad se ingreso correctamente"
                   ];
    
-               else :
-   
-                  
+               else :               
                   $this->mensajes[] = [
                      "tipo" => "danger",
                      "mensaje" => "La actividad no pudo registrarse <br />({$resultModelo["error"]})"
                   ];
                endif;
-
-
             }
 
          } else {
-
-            
                   $this->mensajes[] = [
                      "tipo" => "danger",
                      "mensaje" => "Datos de incorrectos"
                   ];
-               }
-      
+               }  
          }
     
          $parametros = [
@@ -463,48 +456,10 @@ class HomeController extends BaseController
              ],
             "mensajes" => $this->mensajes
          ];
-    
-
-
+         
             $this->view->show("addActividad",$parametros);
     
-
       }
 
-
-
-      public function descargarHorario()
-      {
-   
-            $horario = new ActividadModel();
-            $horario = $horario->listadoHorario();
-            $horario = $horario["datos"];
-            
-            require 'vendor/autoload.php';
-   
-            $parametros = [
-               "tituloventana" => "Inicio",
-               "datos" => $horario
-   
-            ];
-
-            ob_start();
-            $this->view->show("descargaHorario", $parametros);
-            $html = ob_get_clean();
-            $html2pdf = new Html2Pdf('P', 'A4', 'es', 'true', 'UTF-8');
-            $html2pdf->writeHTML($html);
-            $html2pdf->output("horario_GymVirtual.pdf"); // Como parámetro opcional nombre de fichero a descargar
-            ob_end_clean();
-   
-   
-      }
-   
-
-
-
-      
-
-
-     
 
 }

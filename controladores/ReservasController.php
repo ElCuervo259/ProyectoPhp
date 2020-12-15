@@ -34,7 +34,11 @@ class ReservasController extends BaseController
    }
 
 
-
+/**
+ * Funcion que permite al usuario apuntarse a una actividad que haya sido creada
+ *
+ * @return void
+ */
    public function apuntarseActividad(){
 
 
@@ -45,6 +49,7 @@ class ReservasController extends BaseController
         "mensajes" => []
      ];
 
+     //llamamos al modelo apuntarse a la actividad
     $resultModelo = $this->modelo->apuntarseActividad([
 
         "idActividad" => $_GET['id'], 
@@ -52,6 +57,7 @@ class ReservasController extends BaseController
 
      ]);
 
+     //Si el resultado es incorrecto significará que el usuario ya se registro en la actividad
       if($resultModelo["correcto"]==FALSE){
 
          $this->mensajes[] = [
@@ -59,6 +65,7 @@ class ReservasController extends BaseController
             "mensaje" => "El usuario ya se registro en la actividad"
          ];
 
+         //añadimos el modelo Actividad con el que podremos acceder a la consulta siguiente
          $resultModeloDatos = New ActividadModel();
          $listado = $resultModeloDatos-> listadoHorario();
 
@@ -85,7 +92,7 @@ class ReservasController extends BaseController
             ];
          endif;
     
-    
+         //finalizamos listando las actividades llamando a la vista de actividades para el usuario
         $resultModeloDatos = New ActividadModel();
     
         $listado = $resultModeloDatos-> listadoHorario();
@@ -101,6 +108,11 @@ class ReservasController extends BaseController
    }
 
 
+   /**
+    * Funcion que nos permite acceder al listado de las reservas actuales 
+    *
+    * @return void
+    */
    public function listadoReservas()
     {
        // Almacenamos en el array 'parametros[]'los valores que vamos a mostrar en la vista
@@ -117,7 +129,6 @@ class ReservasController extends BaseController
        if ($resultModelo["correcto"]) :
 
          
- 
           $parametros["datos"] = $resultModelo["datos"];
 
           
@@ -141,6 +152,11 @@ class ReservasController extends BaseController
        
     }
 
+    /**
+     * Funcion para eliminar las reservas que se hayan realizado
+     *
+     * @return void
+     */
     public function delReserva()
    {
       // verificamos que hemos recibido los parámetros desde la vista de listado 
@@ -171,7 +187,11 @@ class ReservasController extends BaseController
       $this->listadoReservas();
    }
 
-   
+   /**
+    * Funcion que nos permite ver desde el perfil de usuario las reserva que este haya realizado
+    *
+    * @return void
+    */
    public function misReservas()
     {
        // Almacenamos en el array 'parametros[]'los valores que vamos a mostrar en la vista
@@ -212,7 +232,11 @@ class ReservasController extends BaseController
        
     }
 
-
+    /**
+     * Funcion que permite al usuario elimianar sus reservas
+     *
+     * @return void
+     */
     public function delReservaUser()
    {
       // verificamos que hemos recibido los parámetros desde la vista de listado 

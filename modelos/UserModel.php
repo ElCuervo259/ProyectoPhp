@@ -273,6 +273,12 @@ class UserModel extends BaseModel
        return $return;
     }
  
+    /**
+     * Funcion para realziar la actualizacion en la abse de datos del usuario seleccionado
+     *
+     * @param [type] $datos
+     * @return void
+     */
     public function actuser($datos)
     {
        $return = [
@@ -311,6 +317,12 @@ class UserModel extends BaseModel
        return $return;
     }
  
+    /**
+     * Funcion que listará en la base de datos el usuario que con el id recogido
+     *
+     * @param [type] $id Que recibe del usuario
+     * @return void
+     */
     public function listausuario($id)
     {
        $return = [
@@ -338,7 +350,12 @@ class UserModel extends BaseModel
        return $return;
     }
 
-   
+   /**
+    * Funcion que comprobará si existe el usuario en la base de datos y si existe accederá a la aplicacion
+    *
+    * @param [type] $datos recibira la informacion de los datos de login y contraseña
+    * @return void
+    */
     public function login($datos){
 
       $return = ['correcto' => FALSE ];
@@ -374,6 +391,52 @@ class UserModel extends BaseModel
       return $return;
 
     }
+
+    /**
+     * Funcion que nos permite acceder a la informacion del usuario que se encuentra en la aplicacion en ese momento
+     *
+     * @param [type] $datos
+     * @return void
+     */
+    public function miPerfil($datos){
+
+      $return = [
+         "correcto" => FALSE,
+         "error" => NULL
+      ];
+
+      try {
+         //Inicializamos la transacción
+         $this->db->beginTransaction();
+         //Definimos la instrucción SQL parametrizada 
+         $sql = "UPDATE usuarios SET nombre=:nombre, apellido1=:apellido1, apellido2 =:apellido2,
+                                   telefono =:telefono, direccion=:direccion WHERE id=:id";
+         $query = $this->db->prepare($sql);
+         $query->execute([
+            'id' => $datos["id"],
+            'nombre' => $datos["nombre"],
+            'apellido1' => $datos["apellido1"],
+            'apellido2' => $datos["apellido2"],
+            'telefono' => $datos["telefono"],
+            'direccion' => $datos["direccion"],
+         ]);
+         //Supervisamos si la inserción se realizó correctamente... 
+         if ($query) {
+            $this->db->commit();  // commit() confirma los cambios realizados durante la transacción
+            $return["correcto"] = TRUE;
+         } // o no :(
+      } catch (PDOException $ex) {
+         $this->db->rollback(); // rollback() se revierten los cambios realizados durante la transacción
+         $return["error"] = $ex->getMessage();
+         //die();
+      }
+
+      return $return;
+   }
+
+      
+
+    
 
 
  }

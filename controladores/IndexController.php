@@ -22,7 +22,11 @@ class IndexController extends BaseController
       
    }
 
-
+   /**
+    * Funcion que inicia el proyecto llamando a la ventana de login
+    *
+    * @return void
+    */
    public function index()
    {
       $parametros = [
@@ -32,15 +36,17 @@ class IndexController extends BaseController
    }
 
    /**
-    * Podemos implementar la acción login
+    * Funcion que nos permitirá acceder a la aplicacion si tenemos un usuario validado y registrado
     *
     * @return void
     */
    public function login()
    {
 
+   //utilidades necesarias para el catcha de google
    $secret = "6LcpqgQaAAAAAFLLOc2FluvGr1MRUsUf3SnPOwRl";
- $response = null;
+   $response = null;
+
  // comprueba la clave secreta
  if (isset($_POST['g-recaptcha-response'])) {
    $captcha = $_POST['g-recaptcha-response']; 
@@ -66,13 +72,26 @@ class IndexController extends BaseController
 
    $jsonResponse = json_decode($response);
 
+   //si se pulsa y rellena correctamente el catcha
    if ($jsonResponse->success === true) {
 
       if (!isset($_POST['submit'])) {
          
          if(empty($_POST['usuario']) || empty($_POST['password'])){
-          
-            $this->view->show("Login");
+
+            $this->mensajes[] = [
+               "tipo" => "danger",
+               "mensaje" => "Datos vacios o incorrectos"
+            ];
+
+               $parametros = [
+
+                  "mensajes" => $this->mensajes
+               ];
+
+            $this->view->show("Login",$parametros);
+
+
          }else{
 
                $usuarios = new UserModel();
@@ -180,7 +199,11 @@ class IndexController extends BaseController
          }
       
      
-   
+   /**
+    * Funcion que nos permitirá acceder a la ventana principal
+    *
+    * @return void
+    */
    public function mostrarIndex(){
 
       $this->view->show("Login");
@@ -223,7 +246,11 @@ class IndexController extends BaseController
    
 
 
-
+   /**
+    * Funcion que nos llevará a la ventana principal del usuario
+    *
+    * @return void
+    */
    public function regresoHomeUser()
    {
 
@@ -232,6 +259,11 @@ class IndexController extends BaseController
 
    }
 
+   /**
+    * Funcion para mostrar el horario con las actividades
+    *
+    * @return void
+    */
    public function mostrarActividades(){
 
       $this->view->show("Horario");

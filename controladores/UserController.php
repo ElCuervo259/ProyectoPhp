@@ -41,8 +41,6 @@ class UserController extends BaseController
    public function listado()
    {
 
-
-      
       // Almacenamos en el array 'parametros[]'los valores que vamos a mostrar en la vista
       $parametros = [
          "tituloventana" => "Base de Datos con PHP y PDO",
@@ -111,13 +109,18 @@ class UserController extends BaseController
       $this->listado();
    }
 
+   /**
+    * Funcion que permite añadir usuarios a la base de datos
+    *
+    * @return void
+    */
    public function adduser()
    {
       // Array asociativo que almacenará los mensajes de error que se generen por cada campo
       $errores = array();
       $error = 0;
 
-        var_dump($_POST);
+
       // Si se ha pulsado el botón guardar...
     if (isset($_POST) && !empty($_POST) && isset($_POST['submit'])) { // y hemos recibido las variables del formulario y éstas no están vacías...
          
@@ -171,6 +174,7 @@ class UserController extends BaseController
          }
 
 
+         //Filtramos los campos de la recogidad de datos
          if(!preg_match("/[0-9]{7,8}[A-Z]/",$nif)){
             $this->mensajes[] = [
 
@@ -216,7 +220,8 @@ class UserController extends BaseController
             $error++;
          }
 
-         if(!preg_match("/[a-zA-Z0-9]{3,15}$/",$usuario)){
+        
+         if(empty($usuario) || !preg_match("/[a-zA-Z0-9]{3,15}$/",$usuario)){
             $this->mensajes[] = [
 
                "tipo" => "danger",
@@ -227,13 +232,24 @@ class UserController extends BaseController
             $error++;
          }
 
-         if(!preg_match("/[a-zA-Z0-9]{3,15}$/",$usuario)){
+         if (empty($password) || strlen($password)<8 || (!preg_match("/[0-9]/",$password)||
+        (!preg_match("/[a-z]/",$password)|| (!preg_match("/[A-Z]/",$password))))){
             $this->mensajes[] = [
 
                "tipo" => "danger",
-               "mensaje" => "El nombre de usuario no puede ser mayor que 15"
+               "mensaje" => "La contraseña esta vacia o debe ser mayor que 8,contener al menos 1 digito, letras, y mayusculas"
             ];
 
+            $parametros = ["mensajes" => $this->mensajes];
+            $error++;
+         }
+
+         if(empty($email || !filter_var($email,FILTER_VALIDATE_EMAIL))){
+            $this->mensajes[] = [
+
+               "tipo" => "danger",
+               "mensaje" => "El email esta vacio o contiene un formato incorrecto"
+            ];
             $parametros = ["mensajes" => $this->mensajes];
             $error++;
          }
@@ -243,6 +259,18 @@ class UserController extends BaseController
 
                "tipo" => "danger",
                "mensaje" => "El nombre de usuario no puede ser mayor que 15"
+            ];
+
+            $parametros = ["mensajes" => $this->mensajes];
+            $error++;
+         }
+
+         if(!strlen($direccion)>3){
+
+            $this->mensajes[] = [
+
+               "tipo" => "danger",
+               "mensaje" => "La direccion debe ser mayor que 3"
             ];
 
             $parametros = ["mensajes" => $this->mensajes];
@@ -389,6 +417,7 @@ class UserController extends BaseController
          }
          $nuevaimagen = $imagen;
 
+         //si no tenemos errores
          if (count($errores) == 0) {
             //Ejecutamos la instrucción de actualización a la que le pasamos los valores
             $resultModelo = $this->modelo->actuser([
@@ -480,6 +509,153 @@ class UserController extends BaseController
    }
 
 
+/**
+ * Funcion que permitirá actualizar el perfil del usuario que se encuentra actualmente en la aplicacion
+ *
+ * @return void
+ */
+   public function actMiPerfil()
+   {
+      // Array asociativo que almacenará los mensajes de error que se generen por cada campo
+      $errores = array();
+      // Inicializamos valores de los campos de texto
+      $valnombre = "";
+      $valapellido1 = "";
+      $valapellido2 = "";
+      $valtelefono = "";
+      $valdireccion = "";
+      
+
+      // Si se ha pulsado el botón actualizar...
+      if (isset($_POST['submit'])) { //Realizamos la actualización con los datos existentes en los campos
+         $id = $_SESSION['id']; 
+         $nuevonombre = $_POST['txtnombre'];
+         $nuevoapellido1  = $_POST['txtapellido1'];
+         $nuevoapellido2 = $_POST['txtapellido2'];
+         $nuevotelefono = $_POST['txttelefono'];
+         $nuevodireccion = $_POST['txtdireccion'];
+
+  
+
+         // Definimos la variable $imagen que almacenará el nombre de imagen 
+         // que almacenará la Base de Datos inicializada a NULL
+         $imagen = NULL;
+
+         if (isset($_FILES["imagen"]) && (!empty($_FILES["imagen"]["tmp_name"]))) {
+            // Verificamos la carga de la imagen
+            // Comprobamos si existe el directorio fotos, y si no, lo creamos
+            if (!is_dir("fotos")) {
+               $dir = mkdir("fotos", 0777, true);
+            } else {
+               $dir = true;
+            }
+            // Ya verificado que la carpeta fotos existe movemos el fichero seleccionado a dicha carpeta
+            if ($dir) {
+               //Para asegurarnos que el nombre va a ser único...
+               $nombrefichimg = time() . "-" . $_FILES["imagen"]["name"];
+               // Movemos el fichero de la carpeta temportal a la nuestra
+               $movfichimg = move_uploaded_file($_FILES["imagen"]["tmp_name"], "fotos/" . $nombrefichimg);
+               $imagen = $nombrefichimg;
+               // Verficamos que la carga se ha realizado correctamente
+               if ($movfichimg) {
+                  $imagencargada = true;
+               } else {
+                  //Si no pudo moverse a la carpeta destino generamos un mensaje que se le
+                  //mostrará al usuario en la vista actuser
+                  $imagencargada = false;
+                  $errores["imagen"] = "Error: La imagen no se cargó correctamente! :(";
+                  $this->mensajes[] = [
+                     "tipo" => "danger",
+                     "mensaje" => "Error: La imagen no se cargó correctamente! :("
+                  ];
+               }
+            }
+         }
+         $nuevaimagen = $imagen;
+
+         if (count($errores) == 0) {
+            //Ejecutamos la instrucción de actualización a la que le pasamos los valores
+            $resultModelo = $this->modelo->miPerfil([
+               'id' => $id,
+               'nombre' => $nuevonombre,
+               'apellido1' => $nuevoapellido1,
+               'apellido2' => $nuevoapellido2,
+               'telefono' => $nuevotelefono,
+               'direccion' => $nuevodireccion,
+            ]);
+            //Analizamos cómo finalizó la operación de registro y generamos un mensaje
+            //indicativo del estado correspondiente
+            if ($resultModelo["correcto"]) :
+               $this->mensajes[] = [
+                  "tipo" => "success",
+                  "mensaje" => "El usuario se actualizó correctamente"
+               ];
+            else :
+               $this->mensajes[] = [
+                  "tipo" => "danger",
+                  "mensaje" => "El usuario no pudo actualizarse<br/>({$resultModelo["error"]})"
+               ];
+            endif;
+         } else {
+            $this->mensajes[] = [
+               "tipo" => "danger",
+               "mensaje" => "Datos de registro de usuario erróneos"
+            ];
+         }
+
+         // Obtenemos los valores para mostrarlos en los campos del formulario
+         $valnombre = $nuevonombre;
+         $valapellido1 = $nuevoapellido1;
+         $valapellido2 = $nuevoapellido2;
+         $valtelefono = $nuevotelefono;
+         $valdireccion = $nuevodireccion;
+
+
+
+      } else { //Estamos rellenando los campos con los valores recibidos del listado
+         if (isset($_SESSION['id']) && (is_numeric($_SESSION['id']))) {
+            $id = $_SESSION['id'];
+            //Ejecutamos la consulta para obtener los datos del usuario #id
+            $resultModelo = $this->modelo->listausuario($id);
+            //Analizamos si la consulta se realiz´correctamente o no y generamos un
+            //mensaje indicativo
+            if ($resultModelo["correcto"]) :
+               $this->mensajes[] = [
+                  "tipo" => "success",
+                  "mensaje" => "Los datos del usuario se obtuvieron correctamente"
+               ];
+               $valnombre = $resultModelo["datos"]["nombre"];
+               $valapellido1 = $resultModelo["datos"]["apellido1"];
+               $valapellido2 = $resultModelo["datos"]["apellido2"];
+               $valtelefono = $resultModelo["datos"]["telefono"];
+               $valdireccion = $resultModelo["datos"]["direccion"];
+
+            else :
+               $this->mensajes[] = [
+                  "tipo" => "danger",
+                  "mensaje" => "No se pudieron obtener los datos de usuario<br/>({$resultModelo["error"]})"
+               ];
+            endif;
+         }
+      }
+      //Preparamos un array con todos los valores que tendremos que rellenar en
+      //la vista adduser: título de la página y campos del formulario
+      $parametros = [
+         "tituloventana" => "Base de Datos con PHP y PDO",
+         "datos" => [
+            "txtnombre" => $valnombre,
+            "txtapellido1"  => $valapellido1,
+            "txtapellido2"  => $valapellido2,
+            "txttelefono"  => $valtelefono,
+            "txtdireccion"  => $valdireccion,
+ 
+         ],
+         "mensajes" => $this->mensajes,
+         "id" => $id
+      ];
+      //Mostramos la vista perfilUser
+      $this->view->show("perfilUser",$parametros);
+   }
 
    
 
