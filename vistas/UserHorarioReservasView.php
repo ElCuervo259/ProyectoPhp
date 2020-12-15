@@ -47,6 +47,11 @@
         </ul>
 
         <ul class="navbar-nav nav-flex-icons">
+        <li class="nav-item active">
+            <a class="nav-link" href="?controller=User&accion=actMiPerfil">Mi Perfil
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
           <li class="nav-item active">
             <a class="nav-link" href="?controller=Home&accion=cerrarSesion">Cerrar Sesion
               <span class="sr-only">(current)</span>
