@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 11-12-2020 a las 11:33:32
+-- Tiempo de generación: 16-12-2020 a las 22:29:44
 -- Versión del servidor: 10.4.16-MariaDB
 -- Versión de PHP: 7.4.12
 
@@ -47,7 +47,11 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`id`, `nif`, `nombre`, `apellido1`, `apellido2`, `imagen`, `login`, `password`, `email`, `telefono`, `direccion`, `rol_id`) VALUES
-(3, NULL, NULL, NULL, NULL, NULL, 'admin', 'admin', NULL, NULL, NULL, 0);
+(90, '78990856R', 'alex', 'Crow', 'Crow', NULL, 'alex', '123', 'asd@g.com', 952824877, 'malaga', 1),
+(108, NULL, NULL, NULL, NULL, NULL, 'admin', 'admin', NULL, NULL, NULL, 0),
+(109, '7894561R', 'Juan', 'Cortes', 'Cortes', NULL, 'juanCortes', '123', 'juan@g.com', 952854785, 'malaga', 1),
+(111, '78945612R', 'Laura', 'Cortes', 'Cortes', NULL, 'Laura21', '123', 'b@a.com', 952824870, 'malaga', 1),
+(112, '12345678Z', 'Sofia', 'Reyes', 'Sevillano', NULL, 'sofia1', 'asdASD123', 'sofia@g.com', 952884477, 'Marbella', 3);
 
 --
 -- Índices para tablas volcadas
@@ -70,11 +74,9 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=90;
+  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=113;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-
-
