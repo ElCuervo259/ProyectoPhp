@@ -368,6 +368,7 @@ class UserController extends BaseController
       $valtelefono = "";
       $valdireccion = "";
       $valrol_id = "";
+      $valpassword = "";
       $valimagen = "";
 
       // Si se ha pulsado el botón actualizar...
@@ -379,6 +380,7 @@ class UserController extends BaseController
          $nuevotelefono = $_POST['txttelefono'];
          $nuevodireccion = $_POST['txtdireccion'];
          $nuevorol_id = $_POST['txtrol_id'];
+         $nuevopassword = $_POST['txtpassword'];
          $nuevaimagen = "";
 
          // Definimos la variable $imagen que almacenará el nombre de imagen 
@@ -428,7 +430,7 @@ class UserController extends BaseController
                'telefono' => $nuevotelefono,
                'direccion' => $nuevodireccion,
                'rol_id' => $nuevorol_id,
-               
+               'password' => $nuevopassword,
                'imagen' => $nuevaimagen
             ]);
             //Analizamos cómo finalizó la operación de registro y generamos un mensaje
@@ -458,6 +460,7 @@ class UserController extends BaseController
          $valtelefono = $nuevotelefono;
          $valdireccion = $nuevodireccion;
          $valrol_id = $nuevorol_id;
+         $valpassword = $nuevopassword;
          $valimagen = $nuevaimagen;
 
 
@@ -479,6 +482,7 @@ class UserController extends BaseController
                $valtelefono = $resultModelo["datos"]["telefono"];
                $valdireccion = $resultModelo["datos"]["direccion"];
                $valrol_id = $resultModelo["datos"]["rol_id"];
+               $valpassword = $resultModelo["datos"]["password"];
                $valimagen = $resultModelo["datos"]["imagen"];
             else :
                $this->mensajes[] = [
@@ -499,6 +503,7 @@ class UserController extends BaseController
             "txttelefono"  => $valtelefono,
             "txtdireccion"  => $valdireccion,
             "txtrol_id" => $valrol_id,
+            "txtpassword" => $valpassword,
             "imagen" => $valimagen
          ],
          "mensajes" => $this->mensajes,

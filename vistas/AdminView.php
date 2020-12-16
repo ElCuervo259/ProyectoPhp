@@ -18,7 +18,7 @@
     <div class="container">
 
       <!-- Brand -->
-      <a class="navbar-brand" href="" target="">
+      <a class="navbar-brand" href="#">
         <strong>Gimnasio virtual</strong>
       </a>
 

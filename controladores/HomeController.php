@@ -364,7 +364,7 @@ class HomeController extends BaseController
                "mensajes" => $this->mensajes,
                "id" => $id
             ];
-            //Mostramos la vista actuser
+            //Mostramos la vista actActividad
             $this->view->show("actActividad",$parametros);
          }
 

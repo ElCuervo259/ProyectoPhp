@@ -104,6 +104,9 @@
         <label for="txtnombre">Rol
           <input type="text" class="form-control" name="txtrol_id" value="<?= $datos["txtrol_id"] ?>" required></label>
         <br/>
+        <label for="txtpassword">Contraseña
+          <input type="text" class="form-control" name="txtpassword" value="<?= $datos["txtpassword"] ?>" required></label>
+        <br/>
 
 
 
