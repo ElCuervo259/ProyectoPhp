@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 16-12-2020 a las 22:29:44
+-- Tiempo de generación: 17-12-2020 a las 19:53:11
 -- Versión del servidor: 10.4.16-MariaDB
 -- Versión de PHP: 7.4.12
 
@@ -20,6 +20,51 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `bdaplicacion`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `actividades`
+--
+
+CREATE TABLE `actividades` (
+  `id` int(11) NOT NULL,
+  `nombre` varchar(50) NOT NULL,
+  `aforo` int(2) NOT NULL,
+  `dia` varchar(20) NOT NULL,
+  `hora_inicio` varchar(20) NOT NULL,
+  `hora_fin` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `actividades`
+--
+
+INSERT INTO `actividades` (`id`, `nombre`, `aforo`, `dia`, `hora_inicio`, `hora_fin`) VALUES
+(82, 'gimnasia', 0, 'martes', '07:30', ''),
+(86, 'Zumba', 0, 'lunes', '08:30', ''),
+(88, 'AcroYoga', 20, 'miercoles', '09:00', ''),
+(89, 'Pilates', 20, 'jueves', '10:30', '');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `reservas`
+--
+
+CREATE TABLE `reservas` (
+  `id` int(11) NOT NULL,
+  `idActividad` int(11) NOT NULL,
+  `idUsuario` int(11) NOT NULL,
+  `fecha_reserva` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `reservas`
+--
+
+INSERT INTO `reservas` (`id`, `idActividad`, `idUsuario`, `fecha_reserva`) VALUES
+(112, 82, 90, '2020-12-17');
 
 -- --------------------------------------------------------
 
@@ -50,12 +95,25 @@ INSERT INTO `usuarios` (`id`, `nif`, `nombre`, `apellido1`, `apellido2`, `imagen
 (90, '78990856R', 'alex', 'Crow', 'Crow', NULL, 'alex', '123', 'asd@g.com', 952824877, 'malaga', 1),
 (108, NULL, NULL, NULL, NULL, NULL, 'admin', 'admin', NULL, NULL, NULL, 0),
 (109, '7894561R', 'Juan', 'Cortes', 'Cortes', NULL, 'juanCortes', '123', 'juan@g.com', 952854785, 'malaga', 1),
-(111, '78945612R', 'Laura', 'Cortes', 'Cortes', NULL, 'Laura21', '123', 'b@a.com', 952824870, 'malaga', 1),
-(112, '12345678Z', 'Sofia', 'Reyes', 'Sevillano', NULL, 'sofia1', 'asdASD123', 'sofia@g.com', 952884477, 'Marbella', 3);
+(111, '78945612R', 'Laura', 'Cortes', 'Cortes', NULL, 'Laura21', '123', 'b@a.com', 952824870, 'malaga', 1);
 
 --
 -- Índices para tablas volcadas
 --
+
+--
+-- Indices de la tabla `actividades`
+--
+ALTER TABLE `actividades`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `reservas`
+--
+ALTER TABLE `reservas`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idActividad` (`idActividad`),
+  ADD KEY `idUsuario` (`idUsuario`);
 
 --
 -- Indices de la tabla `usuarios`
@@ -71,10 +129,33 @@ ALTER TABLE `usuarios`
 --
 
 --
+-- AUTO_INCREMENT de la tabla `actividades`
+--
+ALTER TABLE `actividades`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=90;
+
+--
+-- AUTO_INCREMENT de la tabla `reservas`
+--
+ALTER TABLE `reservas`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=113;
+
+--
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
   MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=113;
+
+--
+-- Restricciones para tablas volcadas
+--
+
+--
+-- Filtros para la tabla `reservas`
+--
+ALTER TABLE `reservas`
+  ADD CONSTRAINT `reservas_ibfk_1` FOREIGN KEY (`idActividad`) REFERENCES `actividades` (`id`),
+  ADD CONSTRAINT `reservas_ibfk_2` FOREIGN KEY (`idUsuario`) REFERENCES `usuarios` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
